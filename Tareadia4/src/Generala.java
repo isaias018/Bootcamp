@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class Generala {
     public static void main(String[] args) {
+        System.out.println("Inicio de progrma");
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
 
