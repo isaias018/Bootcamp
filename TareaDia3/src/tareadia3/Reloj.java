@@ -1,5 +1,5 @@
 package tareadia3;
-public class Reloj {
+public final class Reloj {
     private int horas;   // Rango: 0 - 23
     private int minutos; // Rango: 0 - 59
     private int segundos;// Rango: 0 - 59
