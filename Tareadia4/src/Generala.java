@@ -38,7 +38,7 @@ public class Generala {
                 dados += (random.nextInt(6) + 1);
             }
             String resultado = jugada(dados);
-            System.out.println("Tirada N" + intentos + ": " + dados + " => " + resultado);
+            // System.out.println("Tirada N" + intentos + ": " + dados + " => " + resultado);
 
             if (resultado.equals(objetivo)) {
                 System.out.println("\n¡Se encontro la jugada " + objetivo + " en " + intentos + " intento!");
