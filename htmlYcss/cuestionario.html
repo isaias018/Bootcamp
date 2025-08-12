@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Cuestionario</title>
+    <script src="cuestionario.js"></script>
+</head>
+<body>
+    <p id="resultado1"></p>
+    <p id="resultado2"></p>
+    <p id="mensaje"></p>
+    <p id="random"></p>
+
+    <script>
+        
+        document.getElementById("resultado1").innerHTML = "Raíz (+): " + raizCuadraticaSuma(1, -3, 2);
+        document.getElementById("resultado2").innerHTML = "Raíz (-): " + raizCuadraticaResta(1, -3, 2);
+
+       
+        cambiarTextoPorId("mensaje", "Hola, este es un texto cambiado con JavaScript");
+
+        
+        numeroAleatorioEnId("random");
+    </script>
+</body>
+</html>

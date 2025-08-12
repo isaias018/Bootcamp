@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Infija</title>
+    <style>
+        table {
+            margin: auto;
+            border-collapse: collapse;
+        }
+        td {
+            border: 1px solid #361c9f;
+            padding: 20px;
+            text-align: center;
+            font-size: 20px;
+            cursor: pointer;
+            background: #1ea34f;
+        }
+        td:hover {
+            background: #ddd;
+        }
+        #pantalla {
+            height: 50px;
+            background: #655d5d;
+            border: 1px solid #3b2d6c;
+            text-align: right;
+            padding: 10px;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <h2 style="text-align:center;">Calculadora Infija</h2>
+    <div id="pantalla"></div>
+    <table>
+        <tr>
+            <td onclick="agregar('7')">7</td>
+            <td onclick="agregar('8')">8</td>
+            <td onclick="agregar('9')">9</td>
+            <td onclick="agregar('/')">/</td>
+        </tr>
+        <tr>
+            <td onclick="agregar('4')">4</td>
+            <td onclick="agregar('5')">5</td>
+            <td onclick="agregar('6')">6</td>
+            <td onclick="agregar('*')">*</td>
+        </tr>
+        <tr>
+            <td onclick="agregar('1')">1</td>
+            <td onclick="agregar('2')">2</td>
+            <td onclick="agregar('3')">3</td>
+            <td onclick="agregar('-')">-</td>
+        </tr>
+        <tr>
+            <td onclick="agregar('0')">0</td>
+            <td onclick="agregar('.')">.</td>
+            <td onclick="calcular()">=</td>
+            <td onclick="agregar('+')">+</td>
+        </tr>
+        <tr>
+            <td colspan="4" onclick="borrar()">C</td>
+        </tr>
+    </table>
+
+    <script>
+        let pantalla = document.getElementById("pantalla");
+
+        function agregar(valor) {
+            pantalla.innerHTML += valor;
+        }
+
+        function calcular() {
+            try {
+                pantalla.innerHTML = eval(pantalla.innerHTML);
+            } catch (e) {
+                pantalla.innerHTML = "Error";
+            }
+        }
+
+        function borrar() {
+            pantalla.innerHTML = "";
+        }
+    </script>
+</body>
+</html>
