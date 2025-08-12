@@ -1,77 +1,101 @@
-@import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Righteous&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
-*{
-    box-sizing: border-box;
-    font-family: 'Work Sans';
+/* Reset básico */
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
 
-}
-html{
-    scroll-behavior: smooth;
-
-}
-.contenedor-header{
-    background: #1e2326 ;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    left: 0;
-    z-index: 99;
-}
-.contenedor-header header{
-    max-width: 1100px;
-    margin: auto;
+/* Header general */
+.header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 15px 20px;
+    justify-content: space-between;
+    background: #222;
+    color: white;
+    padding: 10px 20px;
 }
-.contenedor-header header .logo a{
-    font-family: 'Righteous';
-    font-size: 36px;
-    color: #1CB698;
-    text-decoration: none;
+
+/* Imagen y nombre */
+.perfil {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; /* permite que el nombre baje si es muy largo */
+    gap: 10px;
 }
-.contenedor-header header ul{
+
+.foto {
+    width: 80px;
+    height: 80px;
+    /* object-fit: cover; */
+    border-radius: 50%;
+}
+
+.nombre {
+    font-size: 1.2rem;
+    max-width: 200px; /* controla el ancho del wrap */
+    word-wrap: break-word;
+}
+
+/* Navegación en una sola línea */
+.navegacion ul {
     display: flex;
     list-style: none;
+    gap: 15px;
 }
-.contenedor-header header nav ul li a{
-    text-align: none;
-    color: #fff;
-    margin: 0 15px;
-    padding: 3px;
-    transition: .5s;
+
+.navegacion a {
     text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
 
+.navegacion a:hover {
+    color: #00bcd4;
 }
-.contenedor-header header nav ul li a:hover{
-    color: #1CB698;
-
-}
-.nav-responsive{
-    background-color: #1CB698;
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    display: none; 
-}
-.incio{
-    background: linear-gradient(to top, rgba(30,35,38,.8), rgba(30,25,28,1)),
-    url(img/pngwing.com.png);
+.inicio{
+    background: linear-gradient( to top, rgba(30,35,38,.8),rgba(30,35,38,1)),
+    url(img/pngimg.com\ -\ pokemon_PNG120.png);
     background-size: cover;
     height: 100vh;
     color: #fff;
     display: flex;
     align-items: center;
 }
-.incio .contenidor-banner{
+.inicio .contenido-banner{
     padding: 20px;
     background-color: #1e2326;
     max-width: 350px;
     margin: auto;
     text-align: center;
     border-radius: 40px;
+
+}
+.inicio .contenido-banner img{
+    margin-top:  40px;
+    border: 10px solid #1CB698;
+    display: block;
+    width: 80%;
+    margin: auto;
+    border-radius: 100%;
+}
+.inicio .contenido-banner h1{
+    margin-top: 40px;
+    font-size: 42px;
+    font-family: 'Righteous';
+}
+.inicio .contenido-banner .redes a{
+    color: #fff;
+    display: inline-block;
+    text-decoration: none;
+    border: 1px solid #fff;
+    border-radius: 100%;
+    width: 42px;
+    height: 42px;
+    line-height: 42px;
+    margin: 40px 5px;
+    font-size: 20px;
+    transition: .3s;
+}
+.inicio .contenido-banner .redes a:hover{
+    background-color: #1CB698;
 }
