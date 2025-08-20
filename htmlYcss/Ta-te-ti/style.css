@@ -1,0 +1,63 @@
+:root{
+    --color-primario:rgb(28,0,34);
+    --line-style: 10px solid var(--color-primario);
+    --font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif';
+}
+body{
+    background-color: rgb(81, 175, 98);
+    user-select: none;
+}
+
+h1{
+    text-align: center;
+    font-size: 4rem;
+    font-family:var(--font-family);
+    color: var(--color-primario) ;
+}
+#contenedorGrilla{
+    display: grid;
+    grid-template-columns: repeat(3, 0fr);
+    justify-content: center;
+}
+.cuadrado{
+    color: var(--color-primario);
+    height: 200px;
+    width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 8rem;
+    font-weight:  bold;
+}
+.medio{
+    border-left: var(--line-style);
+     border-right: var(--line-style); 
+}
+.arriba{
+    border-bottom: var(--line-style); 
+}
+.abajo{
+    border-top: var(--line-style); 
+}
+.ganador{
+    background-color: brown;
+}
+dialog{
+    text-align: center;
+    min-width: 50vw;
+    background-color: rgba(240,248,255,0.73) ;
+    padding: 5rem;
+    border: unset;
+    border-radius: 10px;
+}
+dialog h2{
+    font-family: var(--font-family);
+    font-size: xx-large;
+}
+dialog button{
+    padding: 1rem;
+    font-size: large;
+}
+dialog::backdrop{
+    backdrop-filter: blur(3px);
+}
