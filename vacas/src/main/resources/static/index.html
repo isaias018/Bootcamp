@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión de Vacaciones</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 30px 0;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-header i {
+            font-size: 2rem;
+            margin-right: 15px;
+            color: #667eea;
+        }
+
+        .card-header h3 {
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .stat-card h4 {
+            font-size: 2rem;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th,
+        .table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-rejected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading i {
+            font-size: 2rem;
+            color: #667eea;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .close:hover {
+            color: #333;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1><i class="fas fa-calendar-alt"></i> Sistema de Gestión de Vacaciones</h1>
+        <p>Gestiona solicitudes de vacaciones de forma eficiente</p>
+    </div>
+
+    <!-- Estadísticas -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h4 id="totalUsuarios">-</h4>
+            <p>Total Usuarios</p>
+        </div>
+        <div class="stat-card">
+            <h4 id="solicitudesPendientes">-</h4>
+            <p>Solicitudes Pendientes</p>
+        </div>
+        <div class="stat-card">
+            <h4 id="solicitudesAprobadas">-</h4>
+            <p>Solicitudes Aprobadas</p>
+        </div>
+        <div class="stat-card">
+            <h4 id="usuariosActivos">-</h4>
+            <p>Usuarios Activos</p>
+        </div>
+    </div>
+
+    <!-- Panel de Control -->
+    <div class="dashboard">
+        <!-- Crear Usuario -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-user-plus"></i>
+                <h3>Crear Usuario</h3>
+            </div>
+            <form id="usuarioForm">
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" name="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="apellido">Apellido</label>
+                    <input type="text" id="apellido" name="apellido" required>
+                </div>
+                <div class="form-group">
+                    <label for="correo">Correo Electrónico</label>
+                    <input type="email" id="correo" name="correo" required>
+                </div>
+                <div class="form-group">
+                    <label for="cedula">Número de Cédula</label>
+                    <input type="number" id="cedula" name="nroCedula">
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Teléfono</label>
+                    <input type="text" id="telefono" name="telefono">
+                </div>
+                <button type="submit" class="btn">
+                    <i class="fas fa-save"></i> Crear Usuario
+                </button>
+            </form>
+        </div>
+
+        <!-- Crear Solicitud -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-calendar-plus"></i>
+                <h3>Nueva Solicitud</h3>
+            </div>
+            <form id="solicitudForm">
+                <div class="form-group">
+                    <label for="usuarioSelect">Usuario</label>
+                    <select id="usuarioSelect" name="usuarioId" required>
+                        <option value="">Seleccionar usuario...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="fechaInicio">Fecha de Inicio</label>
+                    <input type="date" id="fechaInicio" name="fechaInicio" required>
+                </div>
+                <div class="form-group">
+                    <label for="fechaFin">Fecha de Fin</label>
+                    <input type="date" id="fechaFin" name="fechaFin" required>
+                </div>
+                <div class="form-group">
+                    <label for="comentario">Comentario</label>
+                    <textarea id="comentario" name="comentario" rows="3" placeholder="Comentario opcional..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-secondary">
+                    <i class="fas fa-paper-plane"></i> Crear Solicitud
+                </button>
+            </form>
+        </div>
+
+        <!-- Acciones Rápidas -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-bolt"></i>
+                <h3>Acciones Rápidas</h3>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <button class="btn btn-info" onclick="cargarUsuarios()">
+                    <i class="fas fa-users"></i> Ver Todos los Usuarios
+                </button>
+                <button class="btn btn-secondary" onclick="cargarSolicitudes()">
+                    <i class="fas fa-list"></i> Ver Todas las Solicitudes
+                </button>
+                <button class="btn" onclick="cargarEstadisticas()">
+                    <i class="fas fa-chart-bar"></i> Actualizar Estadísticas
+                </button>
+                <button class="btn btn-danger" onclick="limpiarFormularios()">
+                    <i class="fas fa-trash"></i> Limpiar Formularios
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alertas -->
+    <div id="alertSuccess" class="alert alert-success">
+        <i class="fas fa-check-circle"></i> <span id="successMessage"></span>
+    </div>
+
+    <div id="alertError" class="alert alert-error">
+        <i class="fas fa-exclamation-triangle"></i> <span id="errorMessage"></span>
+    </div>
+
+    <!-- Loading -->
+    <div id="loading" class="loading">
+        <i class="fas fa-spinner"></i>
+        <p>Cargando...</p>
+    </div>
+
+    <!-- Tabla de Resultados -->
+    <div id="resultsContainer" class="table-container" style="display: none;">
+        <table class="table">
+            <thead id="tableHead"></thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal para editar -->
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="cerrarModal()">&times;</span>
+        <h2 id="modalTitle">Editar</h2>
+        <div id="modalContent"></div>
+    </div>
+</div>
+
+<script>
+    const API_BASE = 'http://localhost:8080/api';
+
+    // Cargar estadísticas al inicio
+    document.addEventListener('DOMContentLoaded', function() {
+        cargarEstadisticas();
+        cargarUsuariosSelect();
+    });
+
+    // Función para mostrar loading
+    function mostrarLoading(mostrar = true) {
+        document.getElementById('loading').style.display = mostrar ? 'block' : 'none';
+    }
+
+    // Función para mostrar alertas
+    function mostrarAlerta(mensaje, tipo = 'success') {
+        const alertElement = document.getElementById(`alert${tipo === 'success' ? 'Success' : 'Error'}`);
+        const messageElement = document.getElementById(`${tipo === 'success' ? 'success' : 'error'}Message`);
+
+        messageElement.textContent = mensaje;
+        alertElement.style.display = 'block';
+
+        setTimeout(() => {
+            alertElement.style.display = 'none';
+        }, 5000);
+    }
+
+    // Cargar estadísticas
+    async function cargarEstadisticas() {
+        try {
+            mostrarLoading(true);
+
+            const [usuariosRes, solicitudesRes] = await Promise.all([
+                fetch(`${API_BASE}/usuarios/count`),
+                fetch(`${API_BASE}/solicitudes/estadisticas`)
+            ]);
+
+            if (usuariosRes.ok) {
+                const totalUsuarios = await usuariosRes.text();
+                document.getElementById('totalUsuarios').textContent = totalUsuarios;
+            }
+
+            // Simular estadísticas por ahora
+            document.getElementById('solicitudesPendientes').textContent = '12';
+            document.getElementById('solicitudesAprobadas').textContent = '28';
+            document.getElementById('usuariosActivos').textContent = '45';
+
+        } catch (error) {
+            console.error('Error cargando estadísticas:', error);
+        } finally {
+            mostrarLoading(false);
+        }
+    }
+
+    // Cargar usuarios para el select
+    async function cargarUsuariosSelect() {
+        try {
+            const response = await fetch(`${API_BASE}/usuarios`);
+            if (response.ok) {
+                const usuarios = await response.json();
+                const select = document.getElementById('usuarioSelect');
+                select.innerHTML = '<option value="">Seleccionar usuario...</option>';
+
+                usuarios.forEach(usuario => {
+                    const option = document.createElement('option');
+                    option.value = usuario.idUsuario;
+                    option.textContent = `${usuario.nombre} ${usuario.apellido} (${usuario.correo})`;
+                    select.appendChild(option);
+                });
+            }
+        } catch (error) {
+            console.error('Error cargando usuarios:', error);
+        }
+    }
+
+    // Crear usuario
+    document.getElementById('usuarioForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const formData = new FormData(e.target);
+        const usuario = Object.fromEntries(formData.entries());
+
+        // Convertir nroCedula a número si existe
+        if (usuario.nroCedula) {
+            usuario.nroCedula = parseInt(usuario.nroCedula);
+        }
+
+        try {
+            mostrarLoading(true);
+            const response = await fetch(`${API_BASE}/usuarios`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(usuario)
+            });
+
+            if (response.ok) {
+                mostrarAlerta('Usuario creado exitosamente');
+                e.target.reset();
+                cargarUsuariosSelect();
+                cargarEstadisticas();
+            } else {
+                const error = await response.text();
+                mostrarAlerta(`Error: ${error}`, 'error');
+            }
+        } catch (error) {
+            mostrarAlerta(`Error de conexión: ${error.message}`, 'error');
+        } finally {
+            mostrarLoading(false);
+        }
+    });
+
+    // Crear solicitud
+    document.getElementById('solicitudForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const formData = new FormData(e.target);
+        const solicitud = Object.fromEntries(formData.entries());
+
+        // Calcular días entre fechas
+        const fechaInicio = new Date(solicitud.fechaInicio);
+        const fechaFin = new Date(solicitud.fechaFin);
+        const diffTime = Math.abs(fechaFin - fechaInicio);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+
+        solicitud.cantidadDias = diffDays;
+        solicitud.usuarioId = parseInt(solicitud.usuarioId);
+
+        try {
+            mostrarLoading(true);
+            const response = await fetch(`${API_BASE}/solicitudes`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(solicitud)
+            });
+
+            if (response.ok) {
+                mostrarAlerta('Solicitud creada exitosamente');
+                e.target.reset();
+                cargarEstadisticas();
+            } else {
+                const error = await response.text();
+                mostrarAlerta(`Error: ${error}`, 'error');
+            }
+        } catch (error) {
+            mostrarAlerta(`Error de conexión: ${error.message}`, 'error');
+        } finally {
+            mostrarLoading(false);
+        }
+    });
+
+    // Cargar usuarios
+    async function cargarUsuarios() {
+        try {
+            mostrarLoading(true);
+            const response = await fetch(`${API_BASE}/usuarios`);
+
+            if (response.ok) {
+                const usuarios = await response.json();
+                mostrarTablaUsuarios(usuarios);
+            } else {
+                mostrarAlerta('Error cargando usuarios', 'error');
+            }
+        } catch (error) {
+            mostrarAlerta(`Error de conexión: ${error.message}`, 'error');
+        } finally {
+            mostrarLoading(false);
+        }
+    }
+
+    // Mostrar tabla de usuarios
+    function mostrarTablaUsuarios(usuarios) {
+        const container = document.getElementById('resultsContainer');
+        const thead = document.getElementById('tableHead');
+        const tbody = document.getElementById('tableBody');
+
+        thead.innerHTML = `
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Correo</th>
+                    <th>Cédula</th>
+                    <th>Teléfono</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            `;
+
+        tbody.innerHTML = usuarios.map(usuario => `
+                <tr>
+                    <td>${usuario.idUsuario}</td>
+                    <td>${usuario.nombre}</td>
+                    <td>${usuario.apellido}</td>
+                    <td>${usuario.correo}</td>
+                    <td>${usuario.nroCedula || 'N/A'}</td>
+                    <td>${usuario.telefono || 'N/A'}</td>
+                    <td>
+                        <span class="status-badge ${usuario.estado ? 'status-active' : 'status-rejected'}">
+                            ${usuario.estado ? 'Activo' : 'Inactivo'}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-info" onclick="editarUsuario(${usuario.idUsuario})" style="font-size: 0.8rem; padding: 5px 10px;">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+
+        container.style.display = 'block';
+        container.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Cargar solicitudes
+    async function cargarSolicitudes() {
+        try {
+            mostrarLoading(true);
+            const response = await fetch(`${API_BASE}/solicitudes`);
+
+            if (response.ok) {
+                const solicitudes = await response.json();
+                mostrarTablaSolicitudes(solicitudes);
+            } else {
+                mostrarAlerta('Error cargando solicitudes', 'error');
+            }
+        } catch (error) {
+            mostrarAlerta(`Error de conexión: ${error.message}`, 'error');
+        } finally {
+            mostrarLoading(false);
+        }
+    }
+
+    // Mostrar tabla de solicitudes
+    function mostrarTablaSolicitudes(solicitudes) {
+        const container = document.getElementById('resultsContainer');
+        const thead = document.getElementById('tableHead');
+        const tbody = document.getElementById('tableBody');
+
+        thead.innerHTML = `
+                <tr>
+                    <th>ID</th>
+                    <th>Usuario</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Fin</th>
+                    <th>Días</th>
+                    <th>Estado</th>
+                    <th>Aprobaciones</th>
+                    <th>Comentario</th>
+                </tr>
+            `;
+
+        tbody.innerHTML = solicitudes.map(solicitud => `
+                <tr>
+                    <td>${solicitud.idSolicitud}</td>
+                    <td>${solicitud.usuario ? solicitud.usuario.nombre + ' ' + solicitud.usuario.apellido : 'N/A'}</td>
+                    <td>${solicitud.fechaInicio}</td>
+                    <td>${solicitud.fechaFin}</td>
+                    <td>${solicitud.cantidadDias || 'N/A'}</td>
+                    <td>
+                        <span class="status-badge ${solicitud.rechazado ? 'status-rejected' : (solicitud.numeroAprobaciones > 0 ? 'status-active' : 'status-pending')}">
+                            ${solicitud.rechazado ? 'Rechazada' : (solicitud.numeroAprobaciones > 0 ? 'Aprobada' : 'Pendiente')}
+                        </span>
+                    </td>
+                    <td>${solicitud.numeroAprobaciones || 0}</td>
+                    <td>${solicitud.comentario || 'Sin comentarios'}</td>
+                </tr>
+            `).join('');
+
+        container.style.display = 'block';
+        container.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Limpiar formularios
+    function limpiarFormularios() {
+        document.getElementById('usuarioForm').reset();
+        document.getElementById('solicitudForm').reset();
+        document.getElementById('resultsContainer').style.display = 'none';
+        mostrarAlerta('Formularios limpiados');
+    }
+
+    // Funciones del modal (placeholder)
+    function editarUsuario(id) {
+        mostrarAlerta('Función de editar en desarrollo', 'error');
+    }
+
+    function cerrarModal() {
+        document.getElementById('editModal').style.display = 'none';
+    }
+</script>
+</body>
+</html>
